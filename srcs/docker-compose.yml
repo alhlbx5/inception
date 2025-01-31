@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  mariadb:
+    build: 
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    container_name: mariadb
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - mariadb:/var/lib/mysql
+    networks:
+      - inception
+    expose:
+      - "3306"
+
+volumes:
+  mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/aalhalab/data/mysql
+
+networks:
+  inception:
+    driver: bridge
