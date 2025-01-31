@@ -16,6 +16,23 @@ services:
     expose:
       - "3306"
 
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    container_name: wordpress
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    depends_on:
+      - mariadb
+    expose:
+      - "9000"
+
 volumes:
   mariadb:
     driver: local
@@ -23,6 +40,12 @@ volumes:
       type: none
       o: bind
       device: /home/aalhalab/data/mysql
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/aalhalab/data/wordpress
 
 networks:
   inception:
